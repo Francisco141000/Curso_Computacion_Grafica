@@ -1,7 +1,7 @@
-// Previo 2
+// Práctica 2
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: 10 de febrero de 2026
+// Fecha de entrega: 15 de febrero de 2026
 
 #include<iostream>
 
@@ -28,7 +28,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "García Hernández Jesús Francisco - Previo 2. Dibujo de Primitivas en 2D", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "García Hernández Jesús Francisco - Práctica 2. Dibujo de Primitivas en 2D", NULL, NULL);
 	glfwSetFramebufferSizeCallback(window, resize);
 	
 	//Verificaci�n de errores de creacion  ventana
@@ -63,76 +63,118 @@ int main() {
     Shader ourShader("Shader/core.vs", "Shader/core.frag");
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
-	/*
-	float vertices[] = {
-		0.5f,  0.5f, 0.0f,    1.0f,0.0f,0.0f,  // top right
-		0.5f, -0.5f, 0.0f,    1.0f,1.0f,0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,   1.0f,0.0f,1.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f,1.0f,0.0f, // top left 
-	};
-	*/
-
-	/*
-	unsigned int indices[] = {  // note that we start from 0!
-		0,1,2,// second Triangle
-		0,2,3,
-	};
-	*/
 
 	float vertices[] = {
+
 		// Cabeza
-		-0.5f,	0.5f,	0.0f,		0.0f,0.0f,0.0f,
-		0.5f,	0.5f,	0.0f,		0.0f,0.0f,0.0f,
-		0.5f,	-0.5f,	0.0f,		0.0f,0.0f,0.0f,
-		-0.5f,	-0.5f,	0.0f,		0.0f,0.0f,0.0f,
+		-0.25f,	0.7f,	0.0f,		0.0f,0.0f,0.0f,
+		0.25f,	0.7f,	0.0f,		0.0f,0.0f,0.0f,
+		0.25f,	0.2f,	0.0f,		0.0f,0.0f,0.0f,
+		-0.25f,	0.2f,	0.0f,		0.0f,0.0f,0.0f,
 
 		// Oreja izquierda
-		-0.30f,	0.5f,	0.0f,		0.2f,0.2f,0.2f,
-		-0.10f,	0.5f,	0.0f,		0.2f,0.2f,0.2f,
-		-0.20f,	0.9f,	0.0f,		0.2f,0.2f,0.2f,
+		-0.15f,	0.7f,	0.0f,		0.7f,0.6f,0.38f,
+		-0.05f,	0.7f,	0.0f,		0.7f,0.6f,0.38f,
+		-0.10f,	0.9f,	0.0f,		0.7f,0.6f,0.38f,
 
 		// Oreja derecha
-		0.10f,	0.5f,	0.0f,		0.2f,0.2f,0.2f,
-		0.30f,	0.5f,	0.0f,		0.2f,0.2f,0.2f,
-		0.20f,	0.9f,	0.0f,		0.2f,0.2f,0.2f,
+		0.05f,	0.7f,	0.0f,		0.7f,0.6f,0.38f,
+		0.15f,	0.7f,	0.0f,		0.7f,0.6f,0.38f,
+		0.1f,	0.9f,	0.0f,		0.7f,0.6f,0.38f,
 
 		// Ojo izquierdo
-		-0.30f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
-		-0.10f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
-		-0.10f,	0.0f,	0.0f,		1.0f,1.0f,1.0f,
-		-0.30f,	0.0f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.15f,	0.6f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.05f,	0.6f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.05f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.15f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
 
 		// Ojo dereccho
-		0.10f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
-		0.30f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
-		0.30f,	0.0f,	0.0f,		1.0f,1.0f,1.0f,
-		0.10f,	0.0f,	0.0f,		1.0f,1.0f,1.0f,
+		0.05f,	0.6f,	0.0f,		1.0f,1.0f,1.0f,
+		0.15f,	0.6f,	0.0f,		1.0f,1.0f,1.0f,
+		0.15f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
+		0.05f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
 
 		// Nariz
-		-0.10f,	-0.1f,	0.0f,		0.9,0.3f,0.6f,
-		0.10f,	-0.1f,	0.0f,		0.9,0.3f,0.6f,
-		0.10f,	-0.2f,	0.0f,		0.9,0.3f,0.6f,
-		-0.10f,	-0.2f,	0.0f,		0.9,0.3f,0.6f,
+		-0.05f,	0.35f,	0.0f,		0.9f,0.3f,0.6f,
+		0.05f,	0.35f,	0.0f,		0.7f,0.1f,0.4f,
+		0.05f,	0.3f,	0.0f,		0.9f,0.3f,0.6f,
+		-0.05f,	0.3f,	0.0f,		0.7f,0.1f,0.4f,
+
+		// Torzo
+		0.15f,	0.4f,	0.0f,		0.43f,0.32f,0.2f,
+		0.15f,	-0.3f,	0.0f,		0.43f,0.32f,0.2f,
+		0.3f,	0.05f,	0.0f,		0.43f,0.32f,0.2f,
+
+		-0.15f,	0.4f,	0.0f,		0.43f,0.32f,0.2f,
+		-0.15f,	-0.3f,	0.0f,		0.43f,0.32f,0.2f,
+		-0.3f,	0.05f,	0.0f,		0.43f,0.32f,0.2f,
+
+		-0.15f,	0.4f,	0.0f,		0.0f,0.0f,0.0f,
+		0.15f,	0.4f,	0.0f,		0.0f,0.0f,0.0f,
+		0.15f,	-0.3f,	0.0f,		0.0f,0.0f,0.0f,
+		-0.15f,	-0.3f,	0.0f,		0.0f,0.0f,0.0f,
+
+		// Piernas
+		
+		0.15f,	0.0f,	0.0f,		0.35f,0.22f,0.16f,
+		0.15f,	-0.7f,	0.0f,		0.35f,0.22f,0.16f,
+		0.35f,	-0.35f,	0.0f,		0.35f,0.22f,0.16f,
+
+		-0.15f,	0.0f,	0.0f,		0.35f,0.22f,0.16f,
+		-0.15f,	-0.7f,	0.0f,		0.35f,0.22f,0.16f,
+		-0.35f,	-0.35f,	0.0f,		0.35f,0.22f,0.16f,
+
+		-0.15f,	0.0f,	0.0f,		0.0f,0.0f,0.0f,
+		0.15f,	0.0f,	0.0f,		0.0f,0.0f,0.0f,
+		0.15f,	-0.7f,	0.0f,		0.0f,0.0f,0.0f,
+		-0.15f,	-0.7f,	0.0f,		0.0f,0.0f,0.0f,
+
+		// Patas
+		0.15f,	-0.7f,	0.0f,		1.0f,1.0f,1.0f,
+		0.21f,	-0.6f,	0.0f,		1.0f,1.0f,1.0f,
+		0.3f,	-0.7f,	0.0f,		1.0f,1.0f,1.0f,
+
+		-0.15f,	-0.7f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.21f,	-0.6f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.3f,	-0.7f,	0.0f,		1.0f,1.0f,1.0f,
+
+		// Cola
+		-0.35f,	-0.35f,	0.0f,		0.0f,0.0f,0.0f,
+		-0.35f,	0.05f,	0.0f,		0.0f,0.0f,0.0f,
+		-0.6f,	0.2f,	0.0f,		0.0f,0.0f,0.0f,
+
+		-0.35f,	0.05f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.6f,	0.2f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.4f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
+
+		-0.6f,	0.2f,	0.0f,		0.0f,0.0f,0.0f,
+		-0.4f,	0.4f,	0.0f,		0.0f,0.0f,0.0f,
+		-0.8f,	0.4f,	0.0f,		0.0f,0.0f,0.0f,
+
+		-0.6f,	0.2f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.8f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.95f,	0.2f,	0.0f,		1.0f,1.0f,1.0f,
 
 		// Bigotes lado izquierdo
-		-0.3f,	-0.2f,	0.0f,		1.0f,1.0f,1.0f,
-		-0.7f,	-0.1f,	0.0f,		1.0f,1.0f,1.0f,
-		-0.3f,	-0.3f,	0.0f,		1.0f,1.0f,1.0f,
-		-0.7f,	-0.3f,	0.0f,		1.0f,1.0f,1.0f,
-		-0.3f,	-0.4f,	0.0f,		1.0f,1.0f,1.0f,
-		-0.7f,	-0.5f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.2f,	0.25f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.35f,	0.2f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.2f,	0.3f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.35f,	0.3f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.2f,	0.35f,	0.0f,		1.0f,1.0f,1.0f,
+		-0.35f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
 
 		// Bigotes lado derecho
-		0.3f,	-0.2f,	0.0f,		1.0f,1.0f,1.0f,
-		0.7f,	-0.1f,	0.0f,		1.0f,1.0f,1.0f,
-		0.3f,	-0.3f,	0.0f,		1.0f,1.0f,1.0f,
-		0.7f,	-0.3f,	0.0f,		1.0f,1.0f,1.0f,
-		0.3f,	-0.4f,	0.0f,		1.0f,1.0f,1.0f,
-		0.7f,	-0.5f,	0.0f,		1.0f,1.0f,1.0f,
+		0.2f,	0.25f,	0.0f,		1.0f,1.0f,1.0f,
+		0.35f,	0.2f,	0.0f,		1.0f,1.0f,1.0f,
+		0.2f,	0.3f,	0.0f,		1.0f,1.0f,1.0f,
+		0.35f,	0.3f,	0.0f,		1.0f,1.0f,1.0f,
+		0.2f,	0.35f,	0.0f,		1.0f,1.0f,1.0f,
+		0.35f,	0.4f,	0.0f,		1.0f,1.0f,1.0f,
 
-		// Complemento ojos
-		-0.20f,	0.2f,	0.0f,		0.4f,0.3f,0.2f,
-		0.20f,	0.2f,	0.0f,		0.4f,0.3f,0.2f,
+		// Pupilas
+		-0.1f,	0.5f,	0.0f,		0.4f,0.3f,0.2f,
+		0.1f,	0.5f,	0.0f,		0.4f,0.3f,0.2f,
+
 	};
 
 	unsigned int indices[] = {  // note that we start from 0!
@@ -146,9 +188,21 @@ int main() {
 		14,16,17,
 		18,19,20,
 		18,20,21,
+		22,23,24,
+		25,26,27,
+		28,29,30,
+		28,30,31,
+		32,33,34,
+		35,36,37,
+		38,39,40,
+		38,40,41,
+		42,43,44,
+		45,46,47,
+		48,49,50,
+		51,52,53,
+		54,55,56,
+		57,58,59,
 	};
-
-
 
 	GLuint VBO, VAO,EBO;
 	glGenVertexArrays(1, &VAO);
@@ -192,46 +246,36 @@ int main() {
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-
-		// Draw our first triangle
         ourShader.Use();
         glBindVertexArray(VAO);
 
-		// Casos planteados en el video guia
-        //glPointSize(15);
-        //glDrawArrays(GL_POINTS,0,2);
-        
-        //glDrawArrays(GL_LINES,0,4);
-        //glDrawArrays(GL_LINE_LOOP,0,4);
-        
-        //glDrawArrays(GL_TRIANGLES,2,3);
-        //glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
-
-		// Ejemplo para el previo 2
-
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(42 * sizeof(GLuint)));			// Piernas
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(48 * sizeof(GLuint)));
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(30 * sizeof(GLuint)));			// Torzo
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(36 * sizeof(GLuint)));
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);									// Cabeza
 		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(6 * sizeof(GLuint)));			// Oreja izquierda
 		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(9 * sizeof(GLuint)));			// Oreja derecha
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(12 * sizeof(GLuint)));			// Ojo izquierdo
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(18 * sizeof(GLuint)));			// Ojo derecho
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(54 * sizeof(GLuint)));			// Patas
+		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, (void*)(60 * sizeof(GLuint)));		// Cola
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(24 * sizeof(GLuint)));			// Nariz
-		glDrawArrays(GL_LINES, 22, 2);															// Bigotes lado izq.
-		glDrawArrays(GL_LINES, 24, 2);
-		glDrawArrays(GL_LINES, 26, 2);
-		glDrawArrays(GL_LINES, 28, 2);															// Bigoyes lado der.
-		glDrawArrays(GL_LINES, 30, 2);
-		glDrawArrays(GL_LINES, 32, 2);
-		glPointSize(25);																		// Ojos (Pupilas)
-		glDrawArrays(GL_POINTS,34,1);
-		glDrawArrays(GL_POINTS, 35, 1);
-        
+		glDrawArrays(GL_LINES, 60, 2);															// Bigotes lado izq.
+		glDrawArrays(GL_LINES, 62, 2);
+		glDrawArrays(GL_LINES, 64, 2);
+		glDrawArrays(GL_LINES, 66, 2);															// Bigotes lado der.
+		glDrawArrays(GL_LINES, 68, 2);
+		glDrawArrays(GL_LINES, 70, 2);
+		glPointSize(15);																		// Ojos (Pupilas)
+		glDrawArrays(GL_POINTS,72,1);
+		glDrawArrays(GL_POINTS, 73, 1);
+		
         glBindVertexArray(0);
     
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
 	}
-
-
 
 	glfwTerminate();
 	return EXIT_SUCCESS;
