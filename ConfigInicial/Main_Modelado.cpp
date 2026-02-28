@@ -16,8 +16,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
-
 // Shaders
 #include "Shader.h"
 
@@ -86,48 +84,229 @@ int main() {
 
 
 	// use with Perspective Projection
+
+	// Cubo 0  (inicio:   0) - Cafe oscuro
+	// Cubo 1  (inicio:  36) - Cafe medio
+	// Cubo 2  (inicio:  72) - Cafe claro
+	// Cubo 3  (inicio: 108) - Blanco
+	// Cubo 4  (inicio: 144) - Negro
+
 	float vertices[] = {
-		-0.5f, -0.5f, 0.5f, 1.0f, 0.0f,0.0f,//Front
-		0.5f, -0.5f, 0.5f,  1.0f, 0.0f,0.0f,
-		0.5f,  0.5f, 0.5f,  1.0f, 0.0f,0.0f,
-		0.5f,  0.5f, 0.5f,  1.0f, 0.0f,0.0f,
-		-0.5f,  0.5f, 0.5f, 1.0f, 0.0f,0.0f,
-		-0.5f, -0.5f, 0.5f, 1.0f, 0.0f,0.0f,
-		
-	    -0.5f, -0.5f,-0.5f, 0.0f, 1.0f,0.0f,//Back
-		 0.5f, -0.5f,-0.5f, 0.0f, 1.0f,0.0f,
-		 0.5f,  0.5f,-0.5f, 0.0f, 1.0f,0.0f,
-		 0.5f,  0.5f,-0.5f, 0.0f, 1.0f,0.0f,
-	    -0.5f,  0.5f,-0.5f, 0.0f, 1.0f,0.0f,
-	    -0.5f, -0.5f,-0.5f, 0.0f, 1.0f,0.0f,
-		
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f, 0.0f,1.0f,
-		 0.5f,  -0.5f, 0.5f, 0.0f, 0.0f,1.0f,
-      
-		-0.5f,  0.5f,  0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f, -0.5f, -0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f, -0.5f, -0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f, -0.5f,  0.5f,  1.0f, 1.0f,0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 1.0f,0.0f,
-		
-		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 1.0f,1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 1.0f,1.0f,
-		-0.5f, -0.5f,  0.5f, 0.0f, 1.0f,1.0f,
-		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,1.0f,
-		
-		-0.5f,  0.5f, -0.5f, 1.0f, 0.2f,0.5f,
-		0.5f,  0.5f, -0.5f,  1.0f, 0.2f,0.5f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.2f,0.5f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.2f,0.5f,
-		-0.5f,  0.5f,  0.5f, 1.0f, 0.2f,0.5f,
-		-0.5f,  0.5f, -0.5f, 1.0f, 0.2f,0.5f,
+
+		// Cubo 0
+		-0.5f,-0.5f, 0.5f,  0.25f,0.13f,0.03f, //Front
+		 0.5f,-0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		 0.5f, 0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		 0.5f, 0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		-0.5f, 0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		-0.5f,-0.5f, 0.5f,  0.25f,0.13f,0.03f,
+
+		-0.5f,-0.5f,-0.5f,  0.25f,0.13f,0.03f, //Back
+		 0.5f,-0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		 0.5f, 0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		 0.5f, 0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		-0.5f, 0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		-0.5f,-0.5f,-0.5f,  0.25f,0.13f,0.03f,
+
+		 0.5f,-0.5f, 0.5f,  0.25f,0.13f,0.03f, //Right
+		 0.5f,-0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		 0.5f, 0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		 0.5f, 0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		 0.5f, 0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		 0.5f,-0.5f, 0.5f,  0.25f,0.13f,0.03f,
+
+		-0.5f, 0.5f, 0.5f,  0.25f,0.13f,0.03f, //Left
+		-0.5f, 0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		-0.5f,-0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		-0.5f,-0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		-0.5f,-0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		-0.5f, 0.5f, 0.5f,  0.25f,0.13f,0.03f,
+
+		-0.5f,-0.5f,-0.5f,  0.25f,0.13f,0.03f, //Bottom
+		 0.5f,-0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		 0.5f,-0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		 0.5f,-0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		-0.5f,-0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		-0.5f,-0.5f,-0.5f,  0.25f,0.13f,0.03f,
+
+		-0.5f, 0.5f,-0.5f,  0.25f,0.13f,0.03f, //Top
+		 0.5f, 0.5f,-0.5f,  0.25f,0.13f,0.03f,
+		 0.5f, 0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		 0.5f, 0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		-0.5f, 0.5f, 0.5f,  0.25f,0.13f,0.03f,
+		-0.5f, 0.5f,-0.5f,  0.25f,0.13f,0.03f,
+
+		// Cubo 1
+		-0.5f,-0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		 0.5f,-0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		-0.5f, 0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		-0.5f,-0.5f, 0.5f,  0.50f,0.25f,0.05f,
+
+		-0.5f,-0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f,-0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		-0.5f, 0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		-0.5f,-0.5f,-0.5f,  0.50f,0.25f,0.05f,
+
+		 0.5f,-0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		 0.5f,-0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		 0.5f,-0.5f, 0.5f,  0.50f,0.25f,0.05f,
+
+		-0.5f, 0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		-0.5f, 0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		-0.5f,-0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		-0.5f,-0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		-0.5f,-0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		-0.5f, 0.5f, 0.5f,  0.50f,0.25f,0.05f,
+
+		-0.5f,-0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f,-0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f,-0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		 0.5f,-0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		-0.5f,-0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		-0.5f,-0.5f,-0.5f,  0.50f,0.25f,0.05f,
+
+		-0.5f, 0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		-0.5f, 0.5f, 0.5f,  0.50f,0.25f,0.05f,
+		-0.5f, 0.5f,-0.5f,  0.50f,0.25f,0.05f,
+
+		// Cubo 2
+		-0.5f,-0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		 0.5f,-0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		-0.5f, 0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		-0.5f,-0.5f, 0.5f,  0.65f,0.35f,0.10f,
+
+		-0.5f,-0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f,-0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		-0.5f, 0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		-0.5f,-0.5f,-0.5f,  0.65f,0.35f,0.10f,
+
+		 0.5f,-0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		 0.5f,-0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		 0.5f,-0.5f, 0.5f,  0.65f,0.35f,0.10f,
+
+		-0.5f, 0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		-0.5f, 0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		-0.5f,-0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		-0.5f,-0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		-0.5f,-0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		-0.5f, 0.5f, 0.5f,  0.65f,0.35f,0.10f,
+
+		-0.5f,-0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f,-0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f,-0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		 0.5f,-0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		-0.5f,-0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		-0.5f,-0.5f,-0.5f,  0.65f,0.35f,0.10f,
+
+		-0.5f, 0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f,-0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		 0.5f, 0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		-0.5f, 0.5f, 0.5f,  0.65f,0.35f,0.10f,
+		-0.5f, 0.5f,-0.5f,  0.65f,0.35f,0.10f,
+
+		// Cubo 3
+		-0.5f,-0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		 0.5f,-0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		-0.5f, 0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		-0.5f,-0.5f, 0.5f,  0.95f,0.92f,0.85f,
+
+		-0.5f,-0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f,-0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		-0.5f, 0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		-0.5f,-0.5f,-0.5f,  0.95f,0.92f,0.85f,
+
+		 0.5f,-0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		 0.5f,-0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		 0.5f,-0.5f, 0.5f,  0.95f,0.92f,0.85f,
+
+		-0.5f, 0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		-0.5f, 0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		-0.5f,-0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		-0.5f,-0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		-0.5f,-0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		-0.5f, 0.5f, 0.5f,  0.95f,0.92f,0.85f,
+
+		-0.5f,-0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f,-0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f,-0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		 0.5f,-0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		-0.5f,-0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		-0.5f,-0.5f,-0.5f,  0.95f,0.92f,0.85f,
+
+		-0.5f, 0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f,-0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		 0.5f, 0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		-0.5f, 0.5f, 0.5f,  0.95f,0.92f,0.85f,
+		-0.5f, 0.5f,-0.5f,  0.95f,0.92f,0.85f,
+
+		// Cubo 4
+		-0.5f,-0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		 0.5f,-0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		-0.5f, 0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		-0.5f,-0.5f, 0.5f,  0.05f,0.05f,0.05f,
+
+		-0.5f,-0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f,-0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		-0.5f, 0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		-0.5f,-0.5f,-0.5f,  0.05f,0.05f,0.05f,
+
+		 0.5f,-0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		 0.5f,-0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		 0.5f,-0.5f, 0.5f,  0.05f,0.05f,0.05f,
+
+		-0.5f, 0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		-0.5f, 0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		-0.5f,-0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		-0.5f,-0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		-0.5f,-0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		-0.5f, 0.5f, 0.5f,  0.05f,0.05f,0.05f,
+
+		-0.5f,-0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f,-0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f,-0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		 0.5f,-0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		-0.5f,-0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		-0.5f,-0.5f,-0.5f,  0.05f,0.05f,0.05f,
+
+		-0.5f, 0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f,-0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		 0.5f, 0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		-0.5f, 0.5f, 0.5f,  0.05f,0.05f,0.05f,
+		-0.5f, 0.5f,-0.5f,  0.05f,0.05f,0.05f,
 	};
 
 	GLuint VBO, VAO;
@@ -198,42 +377,239 @@ int main() {
 	
 		glBindVertexArray(VAO);
 
+		//// Prueba inicial
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glDrawArrays(GL_TRIANGLES, 36, 36);
+
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(6.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glDrawArrays(GL_TRIANGLES, 72, 36);
+
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(9.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glDrawArrays(GL_TRIANGLES, 108, 36);
+
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(12.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glDrawArrays(GL_TRIANGLES, 144, 36);
+
+
 		// Oso
+		// Cafe oscuro	(cuerpo, patas)
+		// Cafe medio	(lomo / capas superiores)
+		// Cafe claro	(cabeza, cuello, hocico)
+		// Blanco		(garras)
+		// Negro		(nariz, ojos)
+
 		// Torso
 		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(0.8f, 0.1f, 1.5f));
-		model = glm::translate(model, glm::vec3(0.6f, 4.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(1.5f, 0.1f, 2.0f));
-		model = glm::translate(model, glm::vec3(0.3f, 3.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(2.4f, 0.1f, 2.0f));
-		model = glm::translate(model, glm::vec3(0.07f, 2.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(2.7f, 0.1f, 2.0f));
-		model = glm::translate(model, glm::vec3(0.04f, 1.0f, 0.0f));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 1.0f, 2.0f));
-		model = glm::translate(model, glm::vec3(0.0f, -0.45f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.05f, 0.55f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.7f, 0.1f, 2.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.1f, 0.65f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.4f, 0.1f, 1.9f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 36, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.2f, 0.75f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.8f, 0.1f, 1.7f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 36, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.3f, 0.85f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 0.1f, 1.4f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 36, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.35f, 0.93f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.08f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 36, 36);
+
+		// Cuello
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.4f, 0.15f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.8f, 1.2f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 72, 36);
 
 		// Cabeza
 		model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(0.3f, 0.6f, 0.8f));
-		model = glm::translate(model, glm::vec3(-5.5f, -0.5f, 0.0f));
+		model = glm::translate(model, glm::vec3(-2.0f, 0.1f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.9f, 0.9f, 1.2f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 72, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.95f, 0.65f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.7f, 0.2f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 72, 36);
+
+		// Hocico
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-2.55f, -0.1f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.4f, 0.8f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 72, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-2.72f, -0.05f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.15f, 0.3f, 0.55f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 72, 36);
+
+		// Nariz
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-2.83f, 0.08f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.1f, 0.15f, 0.3f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 144, 36);
+
+		// Boca
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-2.72f, -0.24f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.12f, 0.08f, 0.45f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 144, 36);
+
+		// Ojos
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-2.5f, 0.3f, 0.42f));
+		model = glm::scale(model, glm::vec3(0.1f, 0.12f, 0.1f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 144, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-2.5f, 0.3f, -0.42f));
+		model = glm::scale(model, glm::vec3(0.1f, 0.12f, 0.1f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 144, 36);
+
+		// Orejas
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.85f, 0.88f, 0.38f));
+		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.85f, 0.88f, -0.38f));
+		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// Pata 1 (delantera izquierda)
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.1f, -0.8f, 0.75f));
+		model = glm::scale(model, glm::vec3(0.55f, 0.6f, 0.55f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.15f, -1.18f, 0.75f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.25f, 0.5f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// Garra
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.32f, -1.33f, 0.75f));
+		model = glm::scale(model, glm::vec3(0.35f, 0.1f, 0.45f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 108, 36);
+
+		// Pata 2 (delantera derecha)
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.1f, -0.8f, -0.75f));
+		model = glm::scale(model, glm::vec3(0.55f, 0.6f, 0.55f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.15f, -1.18f, -0.75f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.25f, 0.5f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// Garra
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-1.32f, -1.33f, -0.75f));
+		model = glm::scale(model, glm::vec3(0.35f, 0.1f, 0.45f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 108, 36);
+
+		// Pata 3 (trasera izquierda)
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(1.1f, -0.8f, 0.75f));
+		model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(1.1f, -1.18f, 0.75f));
+		model = glm::scale(model, glm::vec3(0.55f, 0.25f, 0.55f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// Garra
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.92f, -1.33f, 0.75f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.1f, 0.5f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 108, 36);
+
+		// Pata 4 (trasera derecha)
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(1.1f, -0.8f, -0.75f));
+		model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(1.1f, -1.18f, -0.75f));
+		model = glm::scale(model, glm::vec3(0.55f, 0.25f, 0.55f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// Garra
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.92f, -1.33f, -0.75f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.1f, 0.5f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 108, 36);
+
+		// Cola
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(1.6f, 0.15f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.4f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -272,9 +648,9 @@ int main() {
 		 movZ += 0.008f;
 		//movZ += 0.08f;
 	 if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		 rot += 0.4f;
-		//rot += 0.04f;
+		// rot += 0.4f;
+		rot += 0.04f;
 	 if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		 rot -= 0.4f;
-		//rot -= 0.04f;
+		// rot -= 0.4f;
+		rot -= 0.04f;
  }
