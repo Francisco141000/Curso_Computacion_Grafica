@@ -401,54 +401,106 @@ int main() {
 	return EXIT_SUCCESS;
  }
 
- void Inputs(GLFWwindow *window) {
-	 if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)  //GLFW_RELEASE
-		 glfwSetWindowShouldClose(window, true);
-	 if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		 movX += 0.08f;
-	 if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		 movX -= 0.08f;
-	 if (glfwGetKey(window,GLFW_KEY_UP) == GLFW_PRESS)
-		 movY += 0.08f;
-	 if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		 movY -= 0.08f;
-	 if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		 movZ -= 0.08f;
-	 if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		 movZ += 0.08f;
-	 if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		 rot += 0.18f;
-		 printf("El valor de muneca es: %.2f\n", muneca);
-		 printf("El valor de rot es: %.2f\n", rot);
-		 printf("El valor de movz es: %.2f\n", movZ);
-		 printf("El valor de falange1 es: %.2f\n", falange1);
-		 printf("El valor de falange2 es: %.2f\n", falange2);
-		 printf("El valor de falange3 es: %.2f\n", falange3);
-	 }
-	 if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		 rot -= 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-		 hombro += 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-		 hombro -= 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-		 codo += 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
-		 codo -= 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-		 muneca += 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
-		 muneca -= 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-		 falange1 += 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
-		 falange1 -= 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
-		 falange2 += 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
-		 falange2 -= 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-		 falange3 += 0.18f;
-	 if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-		 falange3 -= 0.18f;
- }
+void Inputs(GLFWwindow* window) {
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)  //GLFW_RELEASE
+		glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		movX += 0.08f;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		movX -= 0.08f;
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		movY += 0.08f;
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		movY -= 0.08f;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		movZ -= 0.08f;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		movZ += 0.08f;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		rot += 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		rot -= 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+		hombro += 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+		hombro -= 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+		codo += 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
+		codo -= 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+		muneca += 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+		muneca -= 0.18f;
+
+	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+		if (falange1 < 90.0f)
+		{
+			falange1 += 0.18f;
+			if ((falange2 < 0.0f))
+			{
+				falange2 += 0.18f;
+				if ((falange3 < 0.0f))
+				{
+					falange3 += 0.18f;
+				}
+			}
+			
+		}
+
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+		if (falange1 > 35.0f)
+		{
+			falange1 -= 0.18f;
+			if ((falange2 > -60.0f))
+			{
+				falange2 -= 0.18f;
+				if ((falange3 > -30.0f))
+				{
+					falange3 -= 0.18f;
+				}
+			}	
+		}
+
+	/*
+	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+		if ((falange1 < 90.0f) && (falange2 < 0.0f) && (falange3 < 0.0f))
+		{
+			falange1 += 0.18f;
+			falange2 += 0.18f;
+			falange3 += 0.18f;
+		}
+
+
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+		if ((falange1 > 35.0f) && (falange2 > -60.0f) && (falange3 > -30.0f))
+		{
+			falange1 -= 0.18f;
+			falange2 -= 0.18f;
+			falange3 -= 0.18f;
+		}
+	*/
+
+	/*
+	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+		if (falange1 < 90.0f)	falange1 += 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+		if (falange1 > 35.0f)	falange1 -= 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+		if (falange2 < 0.0f)	falange2 += 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+		if (falange2 > -60.0f) falange2 -= 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+		if (falange3 < 0.0f)	falange3 += 0.18f;
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+		if (falange3 > -30.0f)	falange3 -= 0.18f;
+*/
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+		printf("El valor de muneca es: %.2f\n", muneca);
+		printf("El valor de rot es: %.2f\n", rot);
+		printf("El valor de movz es: %.2f\n", movZ);
+		printf("El valor de falange1 es: %.2f\n", falange1);
+		printf("El valor de falange2 es: %.2f\n", falange2);
+		printf("El valor de falange3 es: %.2f\n", falange3);
+	}
+}
