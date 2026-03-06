@@ -1,7 +1,7 @@
 // Practica 5
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: XX de marzo de 2026
+// Fecha de entrega: 05 de marzo de 2026
 
 #include<iostream>
 #include <GL/glew.h>
@@ -437,64 +437,42 @@ void Inputs(GLFWwindow* window) {
 		if (falange1 < 90.0f)
 		{
 			falange1 += 0.18f;
+		}
+		else
+		{
 			if ((falange2 < 0.0f))
 			{
 				falange2 += 0.18f;
+			}
+			else
+			{
 				if ((falange3 < 0.0f))
 				{
 					falange3 += 0.18f;
 				}
 			}
-			
 		}
 
 	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
 		if (falange1 > 35.0f)
 		{
 			falange1 -= 0.18f;
+		}
+		else
+		{
 			if ((falange2 > -60.0f))
 			{
 				falange2 -= 0.18f;
+			}
+			else
+			{
 				if ((falange3 > -30.0f))
 				{
 					falange3 -= 0.18f;
 				}
-			}	
+			}
 		}
 
-	/*
-	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-		if ((falange1 < 90.0f) && (falange2 < 0.0f) && (falange3 < 0.0f))
-		{
-			falange1 += 0.18f;
-			falange2 += 0.18f;
-			falange3 += 0.18f;
-		}
-
-
-	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
-		if ((falange1 > 35.0f) && (falange2 > -60.0f) && (falange3 > -30.0f))
-		{
-			falange1 -= 0.18f;
-			falange2 -= 0.18f;
-			falange3 -= 0.18f;
-		}
-	*/
-
-	/*
-	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-		if (falange1 < 90.0f)	falange1 += 0.18f;
-	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
-		if (falange1 > 35.0f)	falange1 -= 0.18f;
-	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
-		if (falange2 < 0.0f)	falange2 += 0.18f;
-	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
-		if (falange2 > -60.0f) falange2 -= 0.18f;
-	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-		if (falange3 < 0.0f)	falange3 += 0.18f;
-	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-		if (falange3 > -30.0f)	falange3 -= 0.18f;
-*/
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
 		printf("El valor de muneca es: %.2f\n", muneca);
 		printf("El valor de rot es: %.2f\n", rot);
