@@ -100,9 +100,11 @@ int main( )
     
     // Load models
 
-    Model dog((char*)"Models/RedDog.obj");
+    Model dog((char*)"Models/RedDog/RedDog.obj");
 
-    Model cactus((char*)"Models/Cactus/10436_Cactus_v1_max2010_it2.obj");
+    Model lamp((char*)"Models/Lamp/Lamp_normal/Lamp_normal.obj");
+
+    //Model cactus((char*)"Models/Cactus/10436_Cactus_v1_max2010_it2.obj");
 
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 100.0f );
     
@@ -134,7 +136,9 @@ int main( )
         glm::mat4 model(1);
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         
-        //dog.Draw(shader);
+        dog.Draw(shader);
+
+        lamp.Draw(shader);
         
         //cactus.Draw(shader);
 
@@ -143,10 +147,12 @@ int main( )
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         dog.Draw(shader);*/
 
+        /*
         model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         cactus.Draw(shader);
+        */
 
         // Swap the buffers
         glfwSwapBuffers( window );
