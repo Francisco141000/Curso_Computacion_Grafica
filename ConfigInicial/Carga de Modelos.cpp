@@ -1,7 +1,7 @@
-// Previo 6
+// Práctica 6
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: 08 de marzo de 2026
+// Fecha de entrega: 14 de marzo de 2026
 
 // Std. Includes
 #include <string>
@@ -37,7 +37,7 @@ void DoMovement( );
 
 
 // Camera
-Camera camera( glm::vec3( 0.0f, 0.0f, 3.0f ) );
+Camera camera( glm::vec3( 0.0f, 2.0f, 20.0f ) );
 bool keys[1024];
 GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
@@ -59,7 +59,7 @@ int main( )
     glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
     
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow *window = glfwCreateWindow( WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Previo 6. Carga de modelos y camara sintetica", nullptr, nullptr );
+    GLFWwindow *window = glfwCreateWindow( WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Practica 6. Carga de modelos y camara sintetica", nullptr, nullptr );
     
     if ( nullptr == window )
     {
@@ -100,15 +100,21 @@ int main( )
     
     // Load models
 
+    Model campfire((char*)"Models/CampFire/CampFire.obj");
+
+    Model doghouse((char*)"Models/DogHouse/DogHouse.obj");
+
+    Model fence_block((char*)"Models/Fence/Fence_block/Fence_block.obj");
+
+    Model forest((char*)"Models/Forest/Forest.obj");
+
+    Model house((char*)"Models/House/House.obj");
+
+    Model lamp_rotated((char*)"Models/Lamp/Lamp_rotated/Lamp_rotated.obj");
+
     Model dog((char*)"Models/RedDog/RedDog.obj");
 
-    Model lamp((char*)"Models/Lamp/Lamp_normal/Lamp_normal.obj");
-
-    //Model cactus((char*)"Models/Cactus/10436_Cactus_v1_max2010_it2.obj");
-
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 100.0f );
-    
-  
 
     // Game loop
     while (!glfwWindowShouldClose(window))
@@ -132,27 +138,54 @@ int main( )
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
-        // Draw the loaded model
+        // Draw the loaded models
+
+        // Modelo house
         glm::mat4 model(1);
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        
+        house.Draw(shader);
+
+        // Modelo perro
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(2.0f, 0.4f, 10.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         dog.Draw(shader);
 
-        lamp.Draw(shader);
-        
-        //cactus.Draw(shader);
-
-        /*model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+        // Modelo fence
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-7.0f, 0.0f, 11.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        dog.Draw(shader);*/
+        fence_block.Draw(shader);
 
-        /*
-        model = glm::rotate(model, glm::radians(-45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+        // Modelo lamp
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.0f, 0.0f, 13.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        cactus.Draw(shader);
-        */
+        lamp_rotated.Draw(shader);
+
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-3.0f, 0.0f, 13.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        lamp_rotated.Draw(shader);
+
+        // Modelo campfire
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.0f, 0.0f, -4.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        campfire.Draw(shader);
+
+        // Modelo doghouse
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-4.0f, 0.0f, -5.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        doghouse.Draw(shader);
+
+        // Modelo forest
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-4.0f, 0.0f, 2.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        forest.Draw(shader);
 
         // Swap the buffers
         glfwSwapBuffers( window );
@@ -186,8 +219,6 @@ void DoMovement( )
     {
         camera.ProcessKeyboard( RIGHT, deltaTime );
     }
-
-   
 }
 
 // Is called whenever a key is pressed/released via GLFW
@@ -197,7 +228,7 @@ void KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
     {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
-    
+
     if ( key >= 0 && key < 1024 )
     {
         if ( action == GLFW_PRESS )
@@ -209,10 +240,6 @@ void KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
             keys[key] = false;
         }
     }
-
- 
-
- 
 }
 
 void MouseCallback( GLFWwindow *window, double xPos, double yPos )
@@ -232,4 +259,3 @@ void MouseCallback( GLFWwindow *window, double xPos, double yPos )
     
     camera.ProcessMouseMovement( xOffset, yOffset );
 }
-
