@@ -102,6 +102,7 @@ int main()
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
+	/*
 	GLfloat vertices[] =
 	{
 		// Positions            // Colors              // Texture Coords
@@ -110,26 +111,67 @@ int main()
 		0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    1.0f,1.0f,
 		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,1.0f,
 	};
+	*/
 
-	GLuint indices[] =
-	{  // Note that we start from 0!
-		0,1,3,
-		1,2,3
-	
+	float vertices[] = {
+		// Positions			// Colors			// Texture Coords
+		
+		// Cara frontal (1)
+		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.044f, 0.51f,	// Inferior izquierdo
+		0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.51f,	// Inferior derecho
+		0.5f,  0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.89f,	// Superior derecho
+		0.5f,  0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.89f,	// Superior derecho
+		-0.5f,  0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.044f, 0.89f,	// Superior izquierdo
+		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.044f, 0.51f,	// Inferior izquierdo
+		
+		// Cara trasera
+		-0.5f, -0.5f,-0.5f,		1.0f, 1.0f, 1.0f,	0.69f, 0.05f,		// Inferior derecho
+		 0.5f, -0.5f,-0.5f,		1.0f, 1.0f, 1.0f,	0.97f, 0.05f,		// Inferior izquierdo
+		 0.5f,  0.5f,-0.5f,		1.0f, 1.0f, 1.0f,	0.97f, 0.44f,		// Superior izquierdo
+		 0.5f,  0.5f,-0.5f,		1.0f, 1.0f, 1.0f,	0.97f, 0.44f,		// Superior izquierdo
+		-0.5f,  0.5f,-0.5f,		1.0f, 1.0f, 1.0f,	0.69f, 0.44f,		// Superior derecho
+		-0.5f, -0.5f,-0.5f,		1.0f, 1.0f, 1.0f,	0.69f, 0.05f,		// Inferior derecho
+
+		// Cara lateral derecha
+		 0.5f, -0.5f,  0.5f,	1.0f, 1.0f, 1.0f,	0.37f, 0.51f,		// Inferior izquierdo
+		 0.5f, -0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.64f, 0.51f,		// Inferior derecho
+		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.64f, 0.89f,		// Superior derecho
+		 0.5f,  0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.64f, 0.89f,		// Superior derecho
+		 0.5f,  0.5f,  0.5f,	1.0f, 1.0f, 1.0f,	0.37f, 0.89f,		// Superior izquierdo
+		 0.5f,  -0.5f, 0.5f,	1.0f, 1.0f, 1.0f,	0.37f, 0.51f,		// inferior izquierdo
+
+		 // Cara lateral izquierda
+		-0.5f,  0.5f,  0.5f,	1.0f, 1.0f, 1.0f,	0.37f, 0.44f,		// Superior derecho
+		-0.5f,  0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.64f, 0.44f,		// Superior izquierdo
+		-0.5f, -0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.64f, 0.05f,		// Inferior izquierdo
+		-0.5f, -0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.64f, 0.05f,		// Inferior izquierdo
+		-0.5f, -0.5f,  0.5f,	1.0f, 1.0f, 1.0f,	0.37f, 0.05f,		// Inferior derecho
+		-0.5f,  0.5f,  0.5f,	1.0f, 1.0f, 1.0f,	0.37f, 0.44f,		// Superior derecho
+
+		// Cara inferior
+		-0.5f, -0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.045f, 0.05f,		// Inferior izquierdo
+		0.5f, -0.5f, -0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.05f,		// Inferior derecho
+		0.5f, -0.5f,  0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.44f,		// Superior derecho
+		0.5f, -0.5f,  0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.44f,		// Superior derecho
+		-0.5f, -0.5f,  0.5f,	1.0f, 1.0f, 1.0f,	0.045f, 0.44f,		// Superior izquierdo
+		-0.5f, -0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.045f, 0.05f,		// Inferior izquierdo
+
+		// Cara superior
+		-0.5f,  0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.69f, 0.5f,		// Inferior izquierdo
+		0.5f,  0.5f, -0.5f,		1.0f, 1.0f, 1.0f,	0.97f, 0.5f,		// Inferior derecho
+		0.5f,  0.5f,  0.5f,		1.0f, 1.0f, 1.0f,	0.97f, 0.9f,		// Superior derecho
+		0.5f,  0.5f,  0.5f,		1.0f, 1.0f, 1.0f,	0.97f, 0.9f,		// Superior derecho
+		-0.5f,  0.5f,  0.5f,	1.0f, 1.0f, 1.0f,	0.69f, 0.9f,		// Superior izquierdo
+		-0.5f,  0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.69f, 0.5f,		// Inferior izquierdo
 	};
 
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO,EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid *)0);
@@ -154,13 +196,13 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 	// Diffuse map
-	image = stbi_load("images/checker_Tex.png", &textureWidth, &textureHeight, &nrChannels,0);
+	image = stbi_load("images/dado.png", &textureWidth, &textureHeight, &nrChannels,0);
 	glBindTexture(GL_TEXTURE_2D, texture1);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	if (image)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else
@@ -202,14 +244,15 @@ int main()
 		// Bind diffuse map
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
-
 		// Set matrices
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		// Draw the light object (using light's vertex attributes)
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
 		// Swap the screen buffers
