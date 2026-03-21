@@ -1,7 +1,7 @@
-// Previo 7
+// Práctica 7
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: 15 de marzo de 2026
+// Fecha de entrega: 20 de marzo de 2026
 
 #include <iostream>
 #include <cmath>
@@ -61,7 +61,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Previo 7. Texturizado", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Practica 7. Texturizado", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -102,27 +102,17 @@ int main()
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
-	/*
-	GLfloat vertices[] =
-	{
-		// Positions            // Colors              // Texture Coords
-		-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,0.0f,
-		0.5f, -0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		1.0f,0.0f,
-		0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    1.0f,1.0f,
-		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,1.0f,
-	};
-	*/
 
-	float vertices[] = {
+	GLfloat vertices[] = {
 		// Positions			// Colors			// Texture Coords
 		
-		// Cara frontal (1)
-		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.044f, 0.51f,	// Inferior izquierdo
-		0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.51f,	// Inferior derecho
-		0.5f,  0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.89f,	// Superior derecho
-		0.5f,  0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.89f,	// Superior derecho
-		-0.5f,  0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.044f, 0.89f,	// Superior izquierdo
-		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.044f, 0.51f,	// Inferior izquierdo
+		// Cara frontal
+		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.044f, 0.51f,		// Inferior izquierdo
+		0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.51f,		// Inferior derecho
+		0.5f,  0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.89f,		// Superior derecho
+		0.5f,  0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.32f, 0.89f,		// Superior derecho
+		-0.5f,  0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.044f, 0.89f,		// Superior izquierdo
+		-0.5f, -0.5f, 0.5f,		1.0f, 1.0f, 1.0f,	0.044f, 0.51f,		// Inferior izquierdo
 		
 		// Cara trasera
 		-0.5f, -0.5f,-0.5f,		1.0f, 1.0f, 1.0f,	0.69f, 0.05f,		// Inferior derecho
@@ -244,15 +234,15 @@ int main()
 		// Bind diffuse map
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
+
 		// Set matrices
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
 		// Draw the light object (using light's vertex attributes)
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
 		// Swap the screen buffers
