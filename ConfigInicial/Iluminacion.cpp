@@ -1,7 +1,7 @@
-// Previo 8
+// Práctica 8
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: 22 de marzo de 2026
+// Fecha de entrega: XX de marzo de 2026
 
 // Std. Includes
 #include <string>
@@ -41,10 +41,10 @@ GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
 
 // Light attributes
-glm::vec3 lightPos(3.0f, 5.0f, 0.0f);
+glm::vec3 lightPos(3.0f, 0.0f, 0.0f);
 
 // Posición segunda fuente de luz
-glm::vec3 lightPos2(-6.0f, 0.0f, 2.0f);
+glm::vec3 lightPos2(-3.0f, 0.0f, 0.0f);
 
 float movelightPos = 0.0f;
 GLfloat deltaTime = 0.0f;
@@ -64,7 +64,7 @@ int main()
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Previo 8. Materiales e Iluminacion", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Practica 8. Materiales e Iluminacion", nullptr, nullptr);
 
     if (nullptr == window)
     {
@@ -106,8 +106,26 @@ int main()
     Shader lightingShader("Shader/lighting.vs", "Shader/lighting.frag");
 
     // Load models
+
+    Model campfire((char*)"Models/CampFire/CampFire.obj");
+
+    Model doghouse((char*)"Models/DogHouse/DogHouse.obj");
+
+    Model fence_block((char*)"Models/Fence/Fence_block/Fence_block.obj");
+
+    Model forest((char*)"Models/Forest/Forest.obj");
+
+    Model house((char*)"Models/House/House.obj");
+
+    Model lamp_rotated((char*)"Models/Lamp/Lamp_rotated/Lamp_rotated.obj");
+
     Model red_dog((char*)"Models/RedDog/RedDog.obj");
-    Model car((char*)"Models/Car/Car.obj");
+
+    Model moon((char*)"Models/Moon/Moon.obj");
+
+    Model sun((char*)"Models/Sun/Sun.obj");
+
+
     glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 
     float vertices[] = {
@@ -221,6 +239,7 @@ int main()
         // Configuración segunda  luz
         GLint lightPosLoc2 = glGetUniformLocation(lightingShader.Program, "light2.position");
         glUniform3f(lightPosLoc2, lightPos2.x + movelightPos, lightPos2.y + movelightPos, lightPos2.z + movelightPos);
+        glUniform3f(lightPosLoc2, lightPos2.x, lightPos2.y, lightPos2.z);
 
         glUniform3f(lightPosLoc, lightPos.x + movelightPos, lightPos.y + movelightPos, lightPos.z + movelightPos);
         glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
@@ -231,9 +250,9 @@ int main()
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 0.5f, 0.5f, 0.5f);
 
         // Propiedades segunda luz
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.ambient"), 0.05f, 0.05f, 0.1f);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.diffuse"), 0.1f, 0.1f, 0.3f);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.specular"), 0.0f, 0.0f, 0.0f); // Sin reflejos
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.ambient"), 0.2f, 0.2f, 0.2f);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.diffuse"), 1.0f, 1.0f, 0.9f);
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.specular"), 0.5f, 0.5f, 0.5f);
 
 
         glm::mat4 view = camera.GetViewMatrix();
@@ -243,17 +262,71 @@ int main()
         // Set material properties
         glUniform3f(glGetUniformLocation(lightingShader.Program, "material.ambient"), 0.4f, 0.4f, 0.4f);
         glUniform3f(glGetUniformLocation(lightingShader.Program, "material.diffuse"), 0.7f, 0.7f, 0.7f);
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "material.specular"), 0.1f, 0.1f, 0.1f); // Reflejo casi nulo
-        glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 1.0f); // Brillo muy disperso
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "material.specular"), 1.0f, 1.0f, 1.0f); // Reflejo
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 128.0f); // Brillo 
 
 
         // Draw the loaded model
+
+        // Modelo house
         glm::mat4 model(1);
-        model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glBindVertexArray(VAO);
-        //car.Draw(lightingShader);
+        house.Draw(lightingShader);
+
+        // Modelo perro
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(2.0f, 0.4f, 10.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         red_dog.Draw(lightingShader);
+
+        // Modelo fence
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-7.0f, 0.0f, 11.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        fence_block.Draw(lightingShader);
+
+        // Modelo lamp
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.0f, 0.0f, 13.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        lamp_rotated.Draw(lightingShader);
+
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-3.0f, 0.0f, 13.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        lamp_rotated.Draw(lightingShader);
+
+        // Modelo campfire
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.0f, 0.0f, -4.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        campfire.Draw(lightingShader);
+
+        // Modelo doghouse
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-4.0f, 0.0f, -5.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        doghouse.Draw(lightingShader);
+
+        // Modelo forest
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-4.0f, 0.0f, 2.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        forest.Draw(lightingShader);
+
+        // Modelo Sun
+        /*model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(4.0f, 10.0f, 0.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        sun.Draw(lightingShader);*/
+
+        // Modelo Moon
+        /*model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-4.0f, 10.0f, 0.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        moon.Draw(lightingShader);*/
+
         
         glBindVertexArray(0);
 
@@ -267,17 +340,18 @@ int main()
         model = glm::scale(model, glm::vec3(0.75f));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        sun.Draw(lightingShader);
 
 
         // Desplegar segunda luz
-        lampshader.Use();
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos2 + movelightPos);
-        model = glm::scale(model, glm::vec3(0.5f));
+        model = glm::scale(model, glm::vec3(0.75f));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        moon.Draw(lightingShader);
 
 
         glBindVertexArray(0);
