@@ -28,7 +28,7 @@ uniform Light light;
 uniform Light light2;
 
 // Línea agregada
-uniform sampler2D texture_diffusse;
+uniform sampler2D texture_diffuse1;
 
 void main()
 {
@@ -60,5 +60,5 @@ void main()
     // RESULTADO COMBINADO
     vec3 result = (ambient1 + diffuse1 + specular1) + (ambient2 + diffuse2 + specular2);
 
-    color = vec4(result, 1.0f) * texture(texture_diffusse, TexCoords);
+    color = vec4(result, 1.0f) * texture(texture_diffuse1, TexCoords);
 }
