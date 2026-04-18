@@ -1,7 +1,7 @@
-// Previo 10
+// Práctica 10
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: 12 de abril de 2026
+// Fecha de entrega: XX de abril de 2026
 
 #include <iostream>
 #include <cmath>
@@ -22,7 +22,6 @@
 
 //Load Models
 #include "SOIL2/SOIL2.h"
-
 
 // Other includes
 #include "Shader.h"
@@ -102,7 +101,6 @@ float vertices[] = {
 };
 
 
-
 glm::vec3 Light1 = glm::vec3(0);
 //Anim
 float rotBall = 0;
@@ -111,6 +109,17 @@ bool AnimBall = false;
 float Altura = 2;
 bool AnimUpDown = false;
 bool UpDown = false;
+
+float rotDog = 0.0f;
+bool AnimDog = false;
+
+float AlturaPelota = 0.0f;
+
+float AlturaPerro = 0.0f;
+
+float senoSalto = 0.0f;
+
+float inclinacionPerro = 0.0f; // Nueva variable para el cabeceo
 
 
 // Deltatime
@@ -129,7 +138,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Previo 10. Animacion basica", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Practica 10. Animacion basica", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -162,16 +171,13 @@ int main()
 	// Define the viewport dimensions
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-
-
 	Shader lightingShader("Shader/lighting.vs", "Shader/lighting.frag");
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
 	
-	//models
+	// Models
 	Model Dog((char*)"Models/RedDog/RedDog.obj");
 	Model Piso((char*)"Models/Piso/piso.obj");
 	Model Ball((char*)"Models/Ball/ball.obj");
-
 
 
 	// First, set the container's VAO (and VBO)
@@ -198,7 +204,6 @@ int main()
 	// Game loop
 	while (!glfwWindowShouldClose(window))
 	{
-
 		// Calculate deltatime of current frame
 		GLfloat currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -216,11 +221,6 @@ int main()
 		// OpenGL options
 		glEnable(GL_DEPTH_TEST);
 
-		
-		
-		
-	
-
 		// Use cooresponding shader when setting uniforms/drawing objects
 		lightingShader.Use();
 
@@ -230,20 +230,17 @@ int main()
 		GLint viewPosLoc = glGetUniformLocation(lightingShader.Program, "viewPos");
 		glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
 
-
 		// Directional light
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.direction"), -0.2f, -1.0f, -0.3f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.ambient"),0.6f,0.6f,0.6f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.diffuse"), 0.6f, 0.6f, 0.6f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.specular"),0.3f, 0.3f, 0.3f);
 
-
 		// Point light 1
 	    glm::vec3 lightColor;
 		lightColor.x= abs(sin(glfwGetTime() *Light1.x));
 		lightColor.y= abs(sin(glfwGetTime() *Light1.y));
 		lightColor.z= sin(glfwGetTime() *Light1.z);
-
 		
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].ambient"), lightColor.x,lightColor.y, lightColor.z);
@@ -252,7 +249,6 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].constant"), 1.0f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].linear"), 0.045f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].quadratic"),0.075f);
-
 
 		// SpotLight
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight.position"), camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
@@ -265,7 +261,6 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.quadratic"), 0.7f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.cutOff"), glm::cos(glm::radians(12.0f)));
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), glm::cos(glm::radians(18.0f)));
-		
 
 		// Set material properties
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 5.0f);
@@ -283,32 +278,40 @@ int main()
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-
 		glm::mat4 model(1);
-
 	
-		
 		//Carga de modelo 
         view = camera.GetViewMatrix();	
+
+
+		// Despliegue Modelo Piso
 		model = glm::mat4(1);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
 
+
+		// Despliegue Modelo Perro
 		model = glm::mat4(1);
+
+		model = glm::rotate(model, glm::radians(rotDog), glm::vec3(0.0f, -1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(2.0f, AlturaPerro, 0.0f));
+		
+		model = glm::rotate(model, glm::radians(inclinacionPerro), glm::vec3(1.0f, 0.0f, 0.0f));
+
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		Dog.Draw(lightingShader);
 
+
+		// Despliegue Modelo Ball
 		model = glm::mat4(1);
 		glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 
-
-		
-		model = glm::translate(model, glm::vec3(0.0f, Altura, 0.0f));
-		model = glm::rotate(model, glm::radians(rotBall), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotDog + 10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(2.0f, Altura, 0.0f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	    Ball.Draw(lightingShader); 
@@ -341,17 +344,12 @@ int main()
 		
 		glBindVertexArray(0);
 
-
-
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
 	}
 
-
 	// Terminate GLFW, clearing any resources allocated by GLFW.
 	glfwTerminate();
-
-
 
 	return 0;
 }
@@ -364,34 +362,28 @@ void DoMovement()
 	if (keys[GLFW_KEY_W] || keys[GLFW_KEY_UP])
 	{
 		camera.ProcessKeyboard(FORWARD, deltaTime);
-
 	}
 
 	if (keys[GLFW_KEY_S] || keys[GLFW_KEY_DOWN])
 	{
 		camera.ProcessKeyboard(BACKWARD, deltaTime);
-
-
 	}
 
 	if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT])
 	{
 		camera.ProcessKeyboard(LEFT, deltaTime);
-
-
 	}
 
 	if (keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT])
 	{
 		camera.ProcessKeyboard(RIGHT, deltaTime);
-
-
 	}
 
 	if (keys[GLFW_KEY_T])
 	{
 		pointLightPositions[0].x += 0.01f;
 	}
+
 	if (keys[GLFW_KEY_G])
 	{
 		pointLightPositions[0].x -= 0.01f;
@@ -406,15 +398,16 @@ void DoMovement()
 	{
 		pointLightPositions[0].y -= 0.01f;
 	}
+
 	if (keys[GLFW_KEY_U])
 	{
 		pointLightPositions[0].z -= 0.1f;
 	}
+
 	if (keys[GLFW_KEY_J])
 	{
 		pointLightPositions[0].z += 0.01f;
 	}
-	
 }
 
 // Is called whenever a key is pressed/released via GLFW
@@ -442,35 +435,45 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		active = !active;
 		if (active)
 		{
-			Light1 = glm::vec3(1.0f, 1.0f, 0.0f);
-			
+			Light1 = glm::vec3(1.0f, 1.0f, 0.0f);	
 		}
 		else
 		{
-			Light1 = glm::vec3(0);//Cuado es solo un valor en los 3 vectores pueden dejar solo una componente
+			Light1 = glm::vec3(0); //Cuado es solo un valor en los 3 vectores pueden dejar solo una componente
 		}
 	}
 	if (keys[GLFW_KEY_N])
 	{
 		AnimBall = !AnimBall;
-		
+		AnimDog = !AnimDog;
 	}
 
 	if (keys[GLFW_KEY_Z])
 	{
 		AnimUpDown = !AnimUpDown;
-
 	}
 }
 void Animation() {
-	if (AnimBall)
+	if (AnimBall && AnimDog)
 	{
-		rotBall += 0.2f;
-		//printf("\n%f", rotBall);
-	}
-	else
-	{
-		rotBall = 0.0f;
+		rotBall += 0.1f;
+		rotDog += 0.1f;
+		Altura = 0.4f + abs(sin(glm::radians(rotDog))) * 3.0f;
+		senoSalto = sin(glm::radians(rotDog * 2));
+
+		if (senoSalto > 0)
+		{
+			AlturaPerro = senoSalto * 1.2f;
+			inclinacionPerro = senoSalto * 30.0f;
+		}
+		else
+		{
+			AlturaPerro = 0.0f;
+			inclinacionPerro = 0.0f; // Regresa a posición normal en el suelo
+		}
+
+		printf("\nrotBall: %f", rotBall);
+		printf("\nrotDog: %f", rotDog);
 	}
 
 	if (AnimUpDown)
