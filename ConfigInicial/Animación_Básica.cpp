@@ -1,7 +1,7 @@
 // Práctica 10
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: XX de abril de 2026
+// Fecha de entrega: 18 de abril de 2026
 
 #include <iostream>
 #include <cmath>
@@ -44,6 +44,7 @@ GLfloat lastX = WIDTH / 2.0;
 GLfloat lastY = HEIGHT / 2.0;
 bool keys[1024];
 bool firstMouse = true;
+
 // Light attributes
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 bool active;
@@ -100,26 +101,20 @@ float vertices[] = {
 	   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 };
 
-
 glm::vec3 Light1 = glm::vec3(0);
+
 //Anim
-float rotBall = 0;
 bool AnimBall = false;
-
-float Altura = 2;
 bool AnimUpDown = false;
-bool UpDown = false;
-
-float rotDog = 0.0f;
 bool AnimDog = false;
-
+bool UpDown = false;
+float Altura = 2;
+float rotBall = 0;
+float rotDog = 0.0f;
 float AlturaPelota = 0.0f;
-
 float AlturaPerro = 0.0f;
-
 float senoSalto = 0.0f;
-
-float inclinacionPerro = 0.0f; // Nueva variable para el cabeceo
+float inclinacionPerro = 0.0f;
 
 
 // Deltatime
@@ -138,6 +133,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
+	//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Practica 10. Animacion basica", nullptr, nullptr);
 
 	if (nullptr == window)
@@ -295,7 +291,6 @@ int main()
 
 		model = glm::rotate(model, glm::radians(rotDog), glm::vec3(0.0f, -1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(2.0f, AlturaPerro, 0.0f));
-		
 		model = glm::rotate(model, glm::radians(inclinacionPerro), glm::vec3(1.0f, 0.0f, 0.0f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -310,7 +305,7 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 
-		model = glm::rotate(model, glm::radians(rotDog + 10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotDog), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(2.0f, Altura, 0.0f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -469,16 +464,12 @@ void Animation() {
 		else
 		{
 			AlturaPerro = 0.0f;
-			inclinacionPerro = 0.0f; // Regresa a posición normal en el suelo
+			inclinacionPerro = 0.0f;
 		}
-
-		printf("\nrotBall: %f", rotBall);
-		printf("\nrotDog: %f", rotDog);
 	}
 
 	if (AnimUpDown)
 	{
-		printf("\n%f", Altura);
 		if (UpDown)
 		{
 			Altura += 0.001f;
@@ -498,10 +489,6 @@ void Animation() {
 			}
 		}
 	}
-	/*else
-	{
-		Altura = 0.4f;
-	}*/
 }
 
 
