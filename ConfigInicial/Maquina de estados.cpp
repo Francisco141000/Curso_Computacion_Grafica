@@ -136,6 +136,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
+	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Previo 11. Animacion maquina de estados", nullptr, nullptr);
 
 	if (nullptr == window)
@@ -532,24 +533,24 @@ void Animation() {
 	{
 		if (!step)			// State 1
 		{
-			RLegs += 0.3f;
-			FLegs += 0.3f;
-			head += 0.3f;
-			tail += 0.3f;
+			RLegs += 0.03f;
+			FLegs += 0.03f;
+			head += 0.03f;
+			tail += 0.03f;
 
 			if (RLegs > 15.0f) step = true;		// Condition 1
 		}
 		else				// State 2
 		{
-			RLegs -= 0.3f;
-			FLegs -= 0.3f;
-			head -= 0.3f;
-			tail -= 0.3f;
+			RLegs -= 0.03f;
+			FLegs -= 0.03f;
+			head -= 0.03f;
+			tail -= 0.03f;
 
 			if (RLegs < -15.0f) step = false;	// Condition 2
 		}
 
-		dogPos.z += 0.001;
+		dogPos.z += 0.0001;
 		printf("\ndogPoz.z = %f", dogPos.z);
 		if (dogPos.z >= 2.3f) dogAnim = 0;
 
