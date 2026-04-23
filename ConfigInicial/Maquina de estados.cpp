@@ -1,7 +1,7 @@
-// Previo 11
+// Practica 11
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: 19 de abril de 2026
+// Fecha de entrega: XX de abril de 2026
 
 #include <iostream>
 #include <cmath>
@@ -34,6 +34,8 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 void MouseCallback(GLFWwindow *window, double xPos, double yPos);
 void DoMovement();
 void Animation();
+void MovCaminar();		// Se declar la nueva función
+void GirarIzq();
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -118,6 +120,8 @@ glm::vec3 dogPos (0.0f,0.0f,0.0f);
 float dogRot = 0.0f;
 bool step = false;
 
+float rotIzq = 0.0f;
+
 
 
 // Deltatime
@@ -136,8 +140,8 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Previo 11. Animacion maquina de estados", nullptr, nullptr);
+	//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Practica 11. Animacion maquina de estados", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -312,8 +316,9 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		//Body
-		modelTemp= model = glm::translate(model, dogPos);
-		modelTemp= model = glm::rotate(model, glm::radians(dogRot), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, dogPos);
+		model = glm::rotate(model, glm::radians(dogRot), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotación sobre eje Y
+		modelTemp = model;
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		DogBody.Draw(lightingShader);
 		//Head
@@ -516,46 +521,114 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	}
 
 }
+
 void Animation() {
-	if (AnimBall)
-	{
-		rotBall += 0.4f;
-		//printf("%f", rotBall);
-	}
+	if (AnimBall) rotBall += 0.4f;
 	
-	if (AnimDog)
-	{
-		rotDog -= 0.6f;
-		//printf("%f", rotBall);
-	}
+	if (AnimDog) rotDog -= 0.6f;
 	
 	if (dogAnim == 1)		// Walk Animation
 	{
-		if (!step)			// State 1
+		MovCaminar();
+		dogPos.z += 0.001;
+		if (dogPos.z >= 2.0f) dogAnim = 2;
+	}
+
+	if (dogAnim == 2)
+	{
+		if (dogRot < 90.0f)
 		{
-			RLegs += 0.03f;
-			FLegs += 0.03f;
-			head += 0.03f;
-			tail += 0.03f;
-
-			if (RLegs > 15.0f) step = true;		// Condition 1
+			MovCaminar();
+			dogRot += 0.1f;
+			dogPos.x = 0.3 * (1.0f - cos(glm::radians(dogRot)));
+			dogPos.z = 2.0f + 0.3 * (sin(glm::radians(dogRot)));
 		}
-		else				// State 2
+		else
 		{
-			RLegs -= 0.03f;
-			FLegs -= 0.03f;
-			head -= 0.03f;
-			tail -= 0.03f;
-
-			if (RLegs < -15.0f) step = false;	// Condition 2
+			dogAnim = 3;
 		}
+	}
 
-		dogPos.z += 0.0001;
-		printf("\ndogPoz.z = %f", dogPos.z);
-		if (dogPos.z >= 2.3f) dogAnim = 0;
+	if (dogAnim == 3)		// Walk Animation
+	{
+		MovCaminar();
+		dogPos.x += 0.001;
+		if (dogPos.x >= 2.0f) dogAnim = 4;
+	}
 
+	if (dogAnim == 4)
+	{
+		if (dogRot < 180.0f)
+		{
+			MovCaminar();
+			dogRot += 0.1f;
+			dogPos.x = 2.0f + 0.3f * (sin(glm::radians(dogRot - 90.0f)));
+			dogPos.z = 2.3f - 0.3f * (1.0f - cos(glm::radians(dogRot - 90.0f)));
+		}
+		else
+		{
+			dogAnim = 5;
+		}
+	}
+
+	if (dogAnim == 5) // Caminata recta tras el segundo giro
+	{
+		MovCaminar();
+		dogPos.z -= 0.001f;
+		if (dogPos.z <= -2.0f) dogAnim = 6; // Detener o reiniciar ciclo
+	}
+
+	if (dogAnim == 6)
+	{
+		if (dogRot < 270.0f)
+		{
+			MovCaminar();
+			dogRot += 0.1f;
+			dogPos.x = 2.0f + 0.3f * (sin(glm::radians(dogRot - 90.0f)));
+			dogPos.z = -1.7f - 0.3f * (1.0f - cos(glm::radians(dogRot - 90.0f)));
+		}
+		else
+		{
+			dogAnim = 7;
+		}
+	}
+
+	if (dogAnim == 7)
+	{
+		MovCaminar();
+		dogPos.x -= 0.001f;
+		if (dogPos.x <= -2.0f) dogAnim = 8; // Detener o reiniciar ciclo
+	}
+
+}
+
+void MovCaminar() {
+	if (!step)			// State 1
+	{
+		RLegs += 0.03f;
+		FLegs += 0.03f;
+		head += 0.03f;
+		tail += 0.03f;
+
+		if (RLegs > 15.0f) step = true;		// Condition 1
+	}
+	else				// State 2
+	{
+		RLegs -= 0.03f;
+		FLegs -= 0.03f;
+		head -= 0.03f;
+		tail -= 0.03f;
+
+		if (RLegs < -15.0f) step = false;	// Condition 2
 	}
 }
+
+//void GirarIzq() {
+//	if (dogRot < 45.0f)
+//	{
+//		dogRot += 0.01f;
+//	}
+//}
 
 void MouseCallback(GLFWwindow *window, double xPos, double yPos)
 {
