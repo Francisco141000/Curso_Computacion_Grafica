@@ -1,7 +1,7 @@
 // Previo 12
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: XX de abril de 2026
+// Fecha de entrega: 27 de abril de 2026
 
 #include <iostream>
 #include <cmath>
@@ -202,7 +202,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+	//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Previo 12. Animacion por Keyframes", nullptr, nullptr);
 
 	if (nullptr == window)
