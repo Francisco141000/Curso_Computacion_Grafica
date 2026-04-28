@@ -23,12 +23,10 @@
 //Load Models
 #include "SOIL2/SOIL2.h"
 
-
 // Other includes
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
-
 
 // Function prototypes
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
@@ -54,7 +52,7 @@ bool active;
 glm::vec3 pointLightPositions[] = {
 	glm::vec3(0.0f,2.0f, 0.0f),
 	glm::vec3(0.0f,0.0f, 0.0f),
-	glm::vec3(0.0f,0.0f,  0.0f),
+	glm::vec3(0.0f,0.0f, 0.0f),
 	glm::vec3(0.0f,0.0f, 0.0f)
 };
 
@@ -108,12 +106,11 @@ glm::vec3 Light1 = glm::vec3(0);
 float rotBall = 0.0f;
 float rotDog = 0.0f;
 int dogAnim = 0;
-float FLegs = 0.0f;
+float LeftFLegs = 0.0f;
+float RightFLegs = 0.0f;
 float RLegs = 0.0f;
 float head = 0.0f;
 float tail = 0.0f;
-
-
 
 //KeyFrames
 float dogPosX , dogPosY , dogPosZ  ;
@@ -131,8 +128,16 @@ typedef struct _frame {
 	float incX;
 	float incY;
 	float incZ;
-
-
+	float head;
+	float headInc;
+	float LeftFLegs;
+	float LeftFLegsInc;
+	float RightFLegs;
+	float RightFLegsInc;
+	float RLegs;
+	float RLegsInc;
+	float tail;
+	float tailInc;
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
@@ -142,16 +147,17 @@ int playIndex = 0;
 
 void saveFrame(void)
 {
-
 	printf("frameindex %d\n", FrameIndex);
 
 	KeyFrame[FrameIndex].dogPosX = dogPosX;
 	KeyFrame[FrameIndex].dogPosY = dogPosY;
 	KeyFrame[FrameIndex].dogPosZ = dogPosZ;
-
 	KeyFrame[FrameIndex].rotDog = rotDog;
-
-
+	KeyFrame[FrameIndex].head = head;
+	KeyFrame[FrameIndex].LeftFLegs = LeftFLegs;
+	KeyFrame[FrameIndex].RightFLegs = RightFLegs;
+	KeyFrame[FrameIndex].RLegs = RLegs;
+	KeyFrame[FrameIndex].tail = tail;
 	FrameIndex++;
 }
 
@@ -160,22 +166,25 @@ void resetElements(void)
 	dogPosX = KeyFrame[0].dogPosX;
 	dogPosY = KeyFrame[0].dogPosY;
 	dogPosZ = KeyFrame[0].dogPosZ;
-
 	rotDog = KeyFrame[0].rotDog;
-
+	head = KeyFrame[0].head;
+	LeftFLegs = KeyFrame[0].LeftFLegs;
+	RightFLegs = KeyFrame[0].RightFLegs;
+	RLegs = KeyFrame[0].RLegs;
+	tail = KeyFrame[0].tail;
 }
 void interpolation(void)
 {
-
 	KeyFrame[playIndex].incX = (KeyFrame[playIndex + 1].dogPosX - KeyFrame[playIndex].dogPosX) / i_max_steps;
 	KeyFrame[playIndex].incY = (KeyFrame[playIndex + 1].dogPosY - KeyFrame[playIndex].dogPosY) / i_max_steps;
 	KeyFrame[playIndex].incZ = (KeyFrame[playIndex + 1].dogPosZ - KeyFrame[playIndex].dogPosZ) / i_max_steps;
-
 	KeyFrame[playIndex].rotDogInc = (KeyFrame[playIndex + 1].rotDog - KeyFrame[playIndex].rotDog) / i_max_steps;
-
+	KeyFrame[playIndex].headInc = (KeyFrame[playIndex + 1].head - KeyFrame[playIndex].head) / i_max_steps;
+	KeyFrame[playIndex].LeftFLegsInc = (KeyFrame[playIndex + 1].LeftFLegs - KeyFrame[playIndex].LeftFLegs) / i_max_steps;
+	KeyFrame[playIndex].RightFLegsInc = (KeyFrame[playIndex + 1].RightFLegs - KeyFrame[playIndex].RightFLegs) / i_max_steps;
+	KeyFrame[playIndex].RLegsInc = (KeyFrame[playIndex + 1].RLegs - KeyFrame[playIndex].RLegs) / i_max_steps;
+	KeyFrame[playIndex].tailInc = (KeyFrame[playIndex + 1].tail - KeyFrame[playIndex].tail) / i_max_steps;
 }
-
-
 
 // Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
@@ -193,6 +202,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
+	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Previo 12. Animacion por Keyframes", nullptr, nullptr);
 
 	if (nullptr == window)
@@ -226,11 +236,8 @@ int main()
 	// Define the viewport dimensions
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-
-
 	Shader lightingShader("Shader/lighting.vs", "Shader/lighting.frag");
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
-	
 	
 	//models
 	Model DogBody((char*)"Models/RedDogSeparated/DogBody.obj");
@@ -243,7 +250,6 @@ int main()
 	Model Piso((char*)"Models/Piso/piso.obj");
 	Model Ball((char*)"Models/Ball/ball.obj");
 
-
 	//KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
 	{
@@ -255,19 +261,26 @@ int main()
 		KeyFrame[i].incZ = 0;
 		KeyFrame[i].rotDog = 0;
 		KeyFrame[i].rotDogInc = 0;
+		KeyFrame[i].head = 0;
+		KeyFrame[i].headInc = 0;
+		KeyFrame[i].LeftFLegs = 0;
+		KeyFrame[i].LeftFLegsInc = 0;
+		KeyFrame[i].RightFLegs = 0;
+		KeyFrame[i].RightFLegsInc = 0;
+		KeyFrame[i].RLegs = 0;
+		KeyFrame[i].RLegsInc = 0;
+		KeyFrame[i].tail = 0;
+		KeyFrame[i].tailInc = 0;
 	}
-
 
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO,EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-	
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
 	
 	// Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
@@ -280,7 +293,6 @@ int main()
 	lightingShader.Use();
 	glUniform1i(glGetUniformLocation(lightingShader.Program, "Material.difuse"), 0);
 	glUniform1i(glGetUniformLocation(lightingShader.Program, "Material.specular"), 1);
-
 	
 	glm::mat4 projection = glm::perspective(camera.GetZoom(), (GLfloat)SCREEN_WIDTH / (GLfloat)SCREEN_HEIGHT, 0.1f, 100.0f);
 
@@ -305,10 +317,7 @@ int main()
 		// OpenGL options
 		glEnable(GL_DEPTH_TEST);
 
-		
-		glm::mat4 modelTemp = glm::mat4(1.0f); //Temp
-		
-	
+		glm::mat4 modelTemp = glm::mat4(1.0f); //Temp	
 
 		// Use cooresponding shader when setting uniforms/drawing objects
 		lightingShader.Use();
@@ -319,20 +328,17 @@ int main()
 		GLint viewPosLoc = glGetUniformLocation(lightingShader.Program, "viewPos");
 		glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
 
-
 		// Directional light
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.direction"), -0.2f, -1.0f, -0.3f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.ambient"),0.6f,0.6f,0.6f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.diffuse"), 0.6f, 0.6f, 0.6f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.specular"),0.3f, 0.3f, 0.3f);
 
-
 		// Point light 1
 	    glm::vec3 lightColor;
 		lightColor.x= abs(sin(glfwGetTime() *Light1.x));
 		lightColor.y= abs(sin(glfwGetTime() *Light1.y));
 		lightColor.z= sin(glfwGetTime() *Light1.z);
-
 		
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].ambient"), lightColor.x,lightColor.y, lightColor.z);
@@ -341,7 +347,6 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].constant"), 1.0f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].linear"), 0.045f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[0].quadratic"),0.075f);
-
 
 		// SpotLight
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight.position"), camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
@@ -355,7 +360,6 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.cutOff"), glm::cos(glm::radians(12.0f)));
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), glm::cos(glm::radians(18.0f)));
 		
-
 		// Set material properties
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 5.0f);
 
@@ -372,10 +376,7 @@ int main()
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-
-		glm::mat4 model(1);
-
-	
+		glm::mat4 model(1);	
 		
 		//Carga de modelo 
         view = camera.GetViewMatrix();	
@@ -386,45 +387,52 @@ int main()
 		model = glm::mat4(1);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+
 		//Body
 		modelTemp= model = glm::translate(model, glm::vec3(dogPosX,dogPosY,dogPosZ));
-		modelTemp= model = glm::rotate(model, glm::radians(rotDog), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelTemp= model = glm::rotate(model, glm::radians(rotDog), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		DogBody.Draw(lightingShader);
+		
 		//Head
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(0.0f, 0.093f, 0.208f));
-		model = glm::rotate(model, glm::radians(head), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(head), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		HeadDog.Draw(lightingShader);
+		
 		//Tail 
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(0.0f, 0.026f, -0.288f));
 		model = glm::rotate(model, glm::radians(tail), glm::vec3(0.0f, 0.0f, -1.0f)); 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); 
 		DogTail.Draw(lightingShader);
+		
 		//Front Left Leg
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(0.112f, -0.044f, 0.074f));
-		model = glm::rotate(model, glm::radians(FLegs), glm::vec3(-1.0f, 0.0f, 0.0f)); 
+		model = glm::rotate(model, glm::radians(LeftFLegs), glm::vec3(-1.0f, 0.0f, 0.0f)); 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		F_LeftLeg.Draw(lightingShader);
+		
 		//Front Right Leg
 		model = modelTemp; 
 		model = glm::translate(model, glm::vec3(-0.111f, -0.055f, 0.074f));
-		model = glm::rotate(model, glm::radians(FLegs), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(RightFLegs), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		F_RightLeg.Draw(lightingShader);
+		
 		//Back Left Leg
 		model = modelTemp; 
 		model = glm::translate(model, glm::vec3(0.082f, -0.046, -0.218)); 
 		model = glm::rotate(model, glm::radians(RLegs), glm::vec3(1.0f, 0.0f, 0.0f)); 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); 
 		B_LeftLeg.Draw(lightingShader);
+		
 		//Back Right Leg
 		model = modelTemp; 
 		model = glm::translate(model, glm::vec3(-0.083f, -0.057f, -0.231f));
-		model = glm::rotate(model, glm::radians(RLegs), glm::vec3(-1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(RLegs), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		B_RightLeg.Draw(lightingShader); 
 
@@ -439,7 +447,6 @@ int main()
 	    Ball.Draw(lightingShader); 
 		glDisable(GL_BLEND);  //Desactiva el canal alfa 
 		glBindVertexArray(0);
-	
 
 		// Also draw the lamp object, again binding the appropriate shader
 		lampShader.Use();
@@ -465,19 +472,13 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		
 		glBindVertexArray(0);
-
 		
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
 	}
 
-	
-	
-
 	// Terminate GLFW, clearing any resources allocated by GLFW.
 	glfwTerminate();
-
-
 
 	return 0;
 }
@@ -489,18 +490,71 @@ void DoMovement()
 	
 	if (keys[GLFW_KEY_2])
 	{
-		
-			rotDog += 1.0f;
-
+		rotDog += 0.01f;
 	}
 
 	if (keys[GLFW_KEY_3])
-	{
-		
-			rotDog -= 1.0f;
-
+	{	
+		rotDog -= 0.01f;
+		dogPosY -= 0.00001f;
 	}
-			
+	
+	if (keys[GLFW_KEY_4])
+	{
+		head += 0.01f;
+	}
+
+	if (keys[GLFW_KEY_5])
+	{
+		head -= 0.01f;
+	}
+
+	if (keys[GLFW_KEY_6])
+	{
+		LeftFLegs += 0.001f;
+	}
+
+	if (keys[GLFW_KEY_7])
+	{
+		LeftFLegs -= 0.001f;
+	}
+
+	if (keys[GLFW_KEY_8])
+	{
+		RightFLegs += 0.001f;
+	}
+
+
+	if (keys[GLFW_KEY_X])
+	{
+		RightFLegs -= 0.01f;
+	}
+
+	if (keys[GLFW_KEY_9])
+	{
+		RightFLegs -= 0.001f;
+	}
+
+	if (keys[GLFW_KEY_1])
+	{
+		RLegs += 0.01f;
+	}
+
+	if (keys[GLFW_KEY_0])
+	{
+		RLegs -= 0.01f;
+	}
+
+	if (keys[GLFW_KEY_O])
+	{
+		tail += 1.0f;
+	}
+
+	if (keys[GLFW_KEY_P])
+	{
+		tail -= 1.0f;
+	}
+
 	if (keys[GLFW_KEY_H])
 	{
 		dogPosZ += 0.01;
@@ -525,34 +579,28 @@ void DoMovement()
 	if (keys[GLFW_KEY_W] || keys[GLFW_KEY_UP])
 	{
 		camera.ProcessKeyboard(FORWARD, deltaTime);
-
 	}
 
 	if (keys[GLFW_KEY_S] || keys[GLFW_KEY_DOWN])
 	{
 		camera.ProcessKeyboard(BACKWARD, deltaTime);
-
-
 	}
 
 	if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT])
 	{
 		camera.ProcessKeyboard(LEFT, deltaTime);
-
-
 	}
 
 	if (keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT])
 	{
 		camera.ProcessKeyboard(RIGHT, deltaTime);
-
-
 	}
 
 	if (keys[GLFW_KEY_T])
 	{
 		pointLightPositions[0].x += 0.01f;
 	}
+
 	if (keys[GLFW_KEY_G])
 	{
 		pointLightPositions[0].x -= 0.01f;
@@ -567,26 +615,25 @@ void DoMovement()
 	{
 		pointLightPositions[0].y -= 0.01f;
 	}
+
 	if (keys[GLFW_KEY_U])
 	{
 		pointLightPositions[0].z -= 0.1f;
 	}
+
 	if (keys[GLFW_KEY_J])
 	{
 		pointLightPositions[0].z += 0.01f;
 	}
-	
 }
 
 // Is called whenever a key is pressed/released via GLFW
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode)
 {
-
 	if (keys[GLFW_KEY_L])
 	{
 		if (play == false && (FrameIndex > 1))
 		{
-
 			resetElements();
 			//First Interpolation				
 			interpolation();
@@ -608,10 +655,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		{
 			saveFrame();
 		}
-
 	}
-
-
 
 	if (GLFW_KEY_ESCAPE == key && GLFW_PRESS == action)
 	{
@@ -636,16 +680,14 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		if (active)
 		{
 			Light1 = glm::vec3(0.2f, 0.8f, 1.0f);
-			
 		}
 		else
 		{
 			Light1 = glm::vec3(0);//Cuado es solo un valor en los 3 vectores pueden dejar solo una componente
 		}
 	}
-	
-	
 }
+
 void Animation() {
 
 	if (play)
@@ -672,14 +714,15 @@ void Animation() {
 			dogPosX += KeyFrame[playIndex].incX;
 			dogPosY += KeyFrame[playIndex].incY;
 			dogPosZ += KeyFrame[playIndex].incZ;
-
 			rotDog += KeyFrame[playIndex].rotDogInc;
-
+			head += KeyFrame[playIndex].headInc;
+			LeftFLegs += KeyFrame[playIndex].LeftFLegsInc;
+			RightFLegs += KeyFrame[playIndex].RightFLegsInc;
+			RLegs += KeyFrame[playIndex].RLegsInc;
+			tail += KeyFrame[playIndex].tailInc;
 			i_curr_steps++;
 		}
-
 	}
-	
 }
 
 void MouseCallback(GLFWwindow *window, double xPos, double yPos)
