@@ -1,10 +1,12 @@
-// Previo 12
+// Práctica 12
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: 27 de abril de 2026
+// Fecha de entrega: XX de abril de 2026
 
 #include <iostream>
 #include <cmath>
+#include <fstream>
+using namespace std;
 
 // GLEW
 #include <GL/glew.h>
@@ -111,11 +113,12 @@ float RightFLegs = 0.0f;
 float RLegs = 0.0f;
 float head = 0.0f;
 float tail = 0.0f;
+float vuelta = 0.0f;
 
 //KeyFrames
 float dogPosX , dogPosY , dogPosZ  ;
 
-#define MAX_FRAMES 9
+#define MAX_FRAMES 100
 int i_max_steps = 190;
 int i_curr_steps = 0;
 typedef struct _frame {
@@ -138,6 +141,8 @@ typedef struct _frame {
 	float RLegsInc;
 	float tail;
 	float tailInc;
+	float vuelta;
+	float vueltaInc;
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
@@ -158,6 +163,23 @@ void saveFrame(void)
 	KeyFrame[FrameIndex].RightFLegs = RightFLegs;
 	KeyFrame[FrameIndex].RLegs = RLegs;
 	KeyFrame[FrameIndex].tail = tail;
+	KeyFrame[FrameIndex].vuelta = vuelta;
+
+	ofstream MyFile("animacion.txt", std::ios::app);
+
+	MyFile << dogPosX << " " 
+		<< dogPosY << " " 
+		<< dogPosZ << " "
+		<< rotDog << " " 
+		<< head << " " 
+		<< LeftFLegs << " "
+		<< RightFLegs << " " 
+		<< RLegs << " " 
+		<< tail << " "
+		<< vuelta << "\n";
+
+	MyFile.close();
+
 	FrameIndex++;
 }
 
@@ -172,6 +194,7 @@ void resetElements(void)
 	RightFLegs = KeyFrame[0].RightFLegs;
 	RLegs = KeyFrame[0].RLegs;
 	tail = KeyFrame[0].tail;
+	vuelta = KeyFrame[0].vuelta;
 }
 void interpolation(void)
 {
@@ -184,6 +207,7 @@ void interpolation(void)
 	KeyFrame[playIndex].RightFLegsInc = (KeyFrame[playIndex + 1].RightFLegs - KeyFrame[playIndex].RightFLegs) / i_max_steps;
 	KeyFrame[playIndex].RLegsInc = (KeyFrame[playIndex + 1].RLegs - KeyFrame[playIndex].RLegs) / i_max_steps;
 	KeyFrame[playIndex].tailInc = (KeyFrame[playIndex + 1].tail - KeyFrame[playIndex].tail) / i_max_steps;
+	KeyFrame[playIndex].vueltaInc = (KeyFrame[playIndex + 1].vuelta - KeyFrame[playIndex].vuelta) / i_max_steps;
 }
 
 // Deltatime
@@ -202,8 +226,8 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Previo 12. Animacion por Keyframes", nullptr, nullptr);
+	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Garcia Hernandez Jesus Francisco - Practica 12. Animacion por Keyframes", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -271,7 +295,39 @@ int main()
 		KeyFrame[i].RLegsInc = 0;
 		KeyFrame[i].tail = 0;
 		KeyFrame[i].tailInc = 0;
+		KeyFrame[i].vuelta = 0;
+		KeyFrame[i].vueltaInc = 0;
 	}
+
+
+	// Leer contenido del archivo
+	ifstream MyReadFile("animacion.txt");
+	int i = 0;
+
+	// Leer los datos mientras el archivo tenga contenido y no superemos MAX_FRAMES
+	while (i < MAX_FRAMES && MyReadFile
+		>> KeyFrame[i].dogPosX
+		>> KeyFrame[i].dogPosY
+		>> KeyFrame[i].dogPosZ
+		>> KeyFrame[i].rotDog 
+		>> KeyFrame[i].head
+		>> KeyFrame[i].LeftFLegs 
+		>> KeyFrame[i].RightFLegs 
+		>> KeyFrame[i].RLegs 
+		>> KeyFrame[i].tail
+		>> KeyFrame[i].vuelta)
+	{
+		i++;
+	}
+
+	FrameIndex = i;
+	if (FrameIndex > 0)
+	{
+		resetElements();
+	}
+
+	MyReadFile.close();
+
 
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO,EBO;
@@ -391,6 +447,7 @@ int main()
 		//Body
 		modelTemp= model = glm::translate(model, glm::vec3(dogPosX,dogPosY,dogPosZ));
 		modelTemp= model = glm::rotate(model, glm::radians(rotDog), glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = model = glm::rotate(model, glm::radians(vuelta), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		DogBody.Draw(lightingShader);
 		
@@ -411,7 +468,7 @@ int main()
 		//Front Left Leg
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(0.112f, -0.044f, 0.074f));
-		model = glm::rotate(model, glm::radians(LeftFLegs), glm::vec3(-1.0f, 0.0f, 0.0f)); 
+		model = glm::rotate(model, glm::radians(LeftFLegs), glm::vec3(1.0f, 0.0f, 0.0f)); 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		F_LeftLeg.Draw(lightingShader);
 		
@@ -488,61 +545,64 @@ void DoMovement()
 {
 	//Dog Controls
 	
+	if (keys[GLFW_KEY_1])
+	{
+		rotDog -= 0.01f;
+		dogPosY -= 0.00001f;
+		LeftFLegs += 0.001f;
+		RightFLegs += 0.001f;
+		RLegs -= 0.01f;
+		head += 0.01f;
+	}
+
 	if (keys[GLFW_KEY_2])
 	{
 		rotDog += 0.01f;
+		dogPosY += 0.00001f;
+		LeftFLegs -= 0.001f;
+		RightFLegs -= 0.001f;
+		RLegs += 0.01f;
+		head -= 0.01f;
 	}
 
 	if (keys[GLFW_KEY_3])
-	{	
-		rotDog -= 0.01f;
-		dogPosY -= 0.00001f;
+	{
+		dogPosY -= 0.0001f;
 	}
-	
+
 	if (keys[GLFW_KEY_4])
 	{
-		head += 0.01f;
+		LeftFLegs -= 0.065f;
+		RightFLegs -= 0.065f;
+		RLegs += 0.065f;
 	}
 
 	if (keys[GLFW_KEY_5])
 	{
-		head -= 0.01f;
+		vuelta += 0.1f;
+		dogPosX -= 0.0004f;
 	}
 
 	if (keys[GLFW_KEY_6])
 	{
-		LeftFLegs += 0.001f;
+		dogPosY += 0.0001f;
 	}
 
 	if (keys[GLFW_KEY_7])
 	{
-		LeftFLegs -= 0.001f;
+		LeftFLegs += 0.065f;
+		RightFLegs += 0.065f;
+		RLegs -= 0.065f;
 	}
 
 	if (keys[GLFW_KEY_8])
 	{
-		RightFLegs += 0.001f;
-	}
-
-
-	if (keys[GLFW_KEY_X])
-	{
-		RightFLegs -= 0.01f;
+		RightFLegs -= 0.065f;;
 	}
 
 	if (keys[GLFW_KEY_9])
 	{
-		RightFLegs -= 0.001f;
-	}
-
-	if (keys[GLFW_KEY_1])
-	{
-		RLegs += 0.01f;
-	}
-
-	if (keys[GLFW_KEY_0])
-	{
-		RLegs -= 0.01f;
+		RightFLegs += 0.065f;;
 	}
 
 	if (keys[GLFW_KEY_O])
@@ -720,6 +780,7 @@ void Animation() {
 			RightFLegs += KeyFrame[playIndex].RightFLegsInc;
 			RLegs += KeyFrame[playIndex].RLegsInc;
 			tail += KeyFrame[playIndex].tailInc;
+			vuelta += KeyFrame[playIndex].vueltaInc;
 			i_curr_steps++;
 		}
 	}
