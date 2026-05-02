@@ -1,7 +1,7 @@
 // Práctica Adicional. SkyBox
 // García Hernández Jesús Francisco
 // 316118732
-// Fecha de entrega: XX de mayo de 2026
+// Fecha de entrega: 02 de mayo de 2026
 
 #include <iostream>
 #include <cmath>
